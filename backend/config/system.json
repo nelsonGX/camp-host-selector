@@ -1,0 +1,26 @@
+{
+  "lecturers": [
+    "飛飛 EC330",
+    "豆泥 EC329",
+    "吳政賢 EC340",
+    "趙式隆 EC345"
+  ],
+  "time_slots": [
+    {
+      "id": 1,
+      "name": "第一時段",
+      "time": "15:55-16:45"
+    },
+    {
+      "id": 2,
+      "name": "第二時段",
+      "time": "16:50-17:30"
+    }
+  ],
+  "settings": {
+    "max_capacity_per_lecturer": 13,
+    "allow_same_lecturer_both_slots": false,
+    "system_name": "講師選課系統",
+    "description": "學員可選擇喜好的講師與時段"
+  }
+}
