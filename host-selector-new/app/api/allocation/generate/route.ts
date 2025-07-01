@@ -34,6 +34,12 @@ export async function POST(request: NextRequest) {
       preferences: student.preferences ? JSON.parse(student.preferences) : []
     }));
 
+    // Shuffle students array for random allocation order
+    for (let i = formattedStudents.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [formattedStudents[i], formattedStudents[j]] = [formattedStudents[j], formattedStudents[i]];
+    }
+
     // Run allocation algorithm
     const algorithm = new AllocationAlgorithm(lecturers, maxCapacity);
     const { allocation, stats } = algorithm.allocate(formattedStudents);
