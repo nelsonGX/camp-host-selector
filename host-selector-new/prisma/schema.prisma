@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "windows"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Student {
+  id          Int      @id @default(autoincrement())
+  studentId   String   @unique @map("student_id")
+  name        String   @unique // Make name unique for login purposes
+  preferences String   @default("[]") // JSON string of lecturer preferences
+  submittedAt DateTime? @map("submitted_at")
+  isSubmitted Boolean  @default(false) @map("is_submitted")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  allocations Allocation[]
+  
+  @@map("students")
+}
+
+model Allocation {
+  id         Int      @id @default(autoincrement())
+  studentId  String   @map("student_id")
+  timeSlot   Int      @map("time_slot") // 1 or 2
+  lecturer   String
+  createdAt  DateTime @default(now()) @map("created_at")
+  
+  // Relations
+  student    Student  @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
+  
+  @@unique([studentId, timeSlot])
+  @@map("allocations")
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  @@map("settings")
+}
+
+model AllocationHistory {
+  id             Int      @id @default(autoincrement())
+  allocationData String   @map("allocation_data") // JSON string
+  stats          String   // JSON string of statistics
+  createdAt      DateTime @default(now()) @map("created_at")
+  
+  @@map("allocation_history")
+}

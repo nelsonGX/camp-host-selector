@@ -4,11 +4,14 @@
   "description": "講師排程與人員分配平台",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm run server\" \"npm run nextjs\"",
+    "dev-old": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd backend && npm run dev",
     "client": "cd frontend && npm start",
-    "build": "cd frontend && npm run build",
-    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install"
+    "nextjs": "cd host-selector-new && npm run dev",
+    "build": "cd host-selector-new && npm run build",
+    "build-old": "cd frontend && npm run build",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ../host-selector-new && npm install"
   },
   "keywords": ["scheduling", "allocation", "camp", "lecturer"],
   "author": "",
