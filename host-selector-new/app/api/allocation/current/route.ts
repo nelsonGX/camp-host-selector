@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma, getSystemConfig } from '@/lib/prisma';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Get current allocations with student information
     const allocations = await prisma.allocation.findMany({
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Initialize time slot distribution
-    timeSlots.forEach((slot: any) => {
+    timeSlots.forEach((slot: {id: number}) => {
       stats.time_slot_distribution[slot.id] = 0;
     });
 

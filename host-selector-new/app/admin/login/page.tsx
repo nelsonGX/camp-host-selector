@@ -32,7 +32,7 @@ const AdminLogin = () => {
           await authAPI.verifyAdmin();
           // 如果驗證成功，重導到管理員儀表板
           router.push('/admin/dashboard');
-        } catch (error) {
+        } catch {
           // 如果驗證失敗，清除本地資料
           localStorage.removeItem('admin_token');
           localStorage.removeItem('admin_session');
@@ -98,8 +98,8 @@ const AdminLogin = () => {
         // 重導到管理員儀表板
         router.push('/admin/dashboard');
       }
-    } catch (error: any) {
-      if (error.code === 'INVALID_PASSWORD') {
+    } catch (error: unknown) {
+      if (error && typeof error === 'object' && 'code' in error && error.code === 'INVALID_PASSWORD') {
         setErrors({ password: '密碼錯誤，請重新輸入' });
       } else {
         toast.error(handleAPIError(error, '登入失敗'));

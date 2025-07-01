@@ -57,7 +57,7 @@ export async function initializeDefaultSettings() {
 export async function getSystemConfig() {
   try {
     const settings = await prisma.setting.findMany();
-    const config: Record<string, any> = {};
+    const config: Record<string, unknown> = {};
     
     settings.forEach(setting => {
       try {
@@ -74,7 +74,7 @@ export async function getSystemConfig() {
         { id: 1, name: '第一時段', time: '15:55-16:45' },
         { id: 2, name: '第二時段', time: '16:50-17:30' }
       ],
-      max_capacity_per_lecturer: parseInt(config.max_capacity_per_lecturer) || 13,
+      max_capacity_per_lecturer: parseInt(String(config.max_capacity_per_lecturer)) || 13,
       allow_same_lecturer_both_slots: config.allow_same_lecturer_both_slots === 'true',
       system_name: config.system_name || '講師選課系統',
       description: config.description || '學員可選擇喜好的講師與時段'

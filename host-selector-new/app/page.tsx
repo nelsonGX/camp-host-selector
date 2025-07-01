@@ -6,7 +6,11 @@ import { FiUser, FiSettings, FiClock, FiUsers, FiBarChart2, FiCheckCircle } from
 import { studentAPI } from '../lib/api';
 
 export default function Home() {
-  const [systemInfo, setSystemInfo] = useState<any>(null);
+  const [systemInfo, setSystemInfo] = useState<{
+    lecturers: string[];
+    time_slots: Array<{name: string; time: string}>;
+    max_capacity: number;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
 
   // 获取系统配置
@@ -179,7 +183,7 @@ export default function Home() {
                 時段安排
               </h3>
               <div className="space-y-4">
-                {timeSlots.map((slot: any, index: number) => (
+                {timeSlots.map((slot: {name: string; time: string}, index: number) => (
                   <div
                     key={index}
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"

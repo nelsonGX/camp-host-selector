@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FiUser, FiArrowUp, FiArrowDown, FiSave, FiSend, FiLoader, FiLogOut, FiInfo } from 'react-icons/fi';
@@ -58,9 +58,9 @@ const StudentPreferences = () => {
 
     // 獲取系統資訊
     fetchSystemInfo();
-  }, [router]);
+  }, [router, fetchSystemInfo]);
 
-  const fetchSystemInfo = async () => {
+  const fetchSystemInfo = useCallback(async () => {
     try {
       const response = await studentAPI.getSystemInfo();
       if (response.success) {
@@ -74,7 +74,7 @@ const StudentPreferences = () => {
     } catch (error) {
       toast.error(handleAPIError(error, '獲取系統資訊失敗'));
     }
-  };
+  }, [preferences.length]);
 
   const moveUp = (index: number) => {
     if (index === 0) return;

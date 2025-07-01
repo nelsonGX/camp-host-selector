@@ -78,7 +78,7 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-function validateConfig(config: any): string[] {
+function validateConfig(config: Record<string, unknown>): string[] {
   const errors: string[] = [];
 
   // Validate lecturers
@@ -87,7 +87,7 @@ function validateConfig(config: any): string[] {
       errors.push('lecturers must be an array');
     } else if (config.lecturers.length === 0) {
       errors.push('lecturers array cannot be empty');
-    } else if (!config.lecturers.every((l: any) => typeof l === 'string')) {
+    } else if (!config.lecturers.every((l: unknown) => typeof l === 'string')) {
       errors.push('all lecturers must be strings');
     }
   }
@@ -99,8 +99,9 @@ function validateConfig(config: any): string[] {
     } else if (config.time_slots.length === 0) {
       errors.push('time_slots array cannot be empty');
     } else {
-      config.time_slots.forEach((slot: any, index: number) => {
-        if (!slot.id || !slot.name || !slot.time) {
+      config.time_slots.forEach((slot: unknown, index: number) => {
+        if (typeof slot !== 'object' || slot === null || 
+            !('id' in slot) || !('name' in slot) || !('time' in slot)) {
           errors.push(`time_slots[${index}] must have id, name, and time properties`);
         }
       });
@@ -109,7 +110,7 @@ function validateConfig(config: any): string[] {
 
   // Validate max_capacity_per_lecturer
   if (config.max_capacity_per_lecturer !== undefined) {
-    const capacity = parseInt(config.max_capacity_per_lecturer);
+    const capacity = parseInt(String(config.max_capacity_per_lecturer));
     if (isNaN(capacity) || capacity < 1 || capacity > 100) {
       errors.push('max_capacity_per_lecturer must be a number between 1 and 100');
     }

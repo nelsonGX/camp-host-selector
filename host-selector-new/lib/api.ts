@@ -177,7 +177,7 @@ export const adminAPI = {
   },
 
   // 更新系統設定
-  async updateSettings(settings: any) {
+  async updateSettings(settings: Record<string, unknown>) {
     const response = await api.put('/admin/settings', settings);
     return response.data;
   },
@@ -197,7 +197,7 @@ export const adminAPI = {
   },
 
   // 更新系統配置
-  async updateConfig(config: any) {
+  async updateConfig(config: Record<string, unknown>) {
     const response = await api.put('/admin/config', config);
     return response.data;
   },
@@ -248,14 +248,18 @@ export const commonAPI = {
 };
 
 // 錯誤處理輔助函數
-export const handleAPIError = (error: any, defaultMessage = '操作失敗') => {
+export const handleAPIError = (error: unknown, defaultMessage = '操作失敗') => {
   console.error('API Error:', error);
   
-  if (error?.type === 'NETWORK_ERROR') {
+  if (error && typeof error === 'object' && 'type' in error && error.type === 'NETWORK_ERROR') {
     return '網路連線錯誤，請檢查網路狀態';
   }
   
-  return error?.message || defaultMessage;
+  if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+    return error.message;
+  }
+  
+  return defaultMessage;
 };
 
 // 匯出下載輔助函數

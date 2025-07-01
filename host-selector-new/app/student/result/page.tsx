@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FiUser, FiClock, FiCheckCircle, FiLoader, FiLogOut, FiRefreshCw, FiInfo } from 'react-icons/fi';
+import { FiClock, FiCheckCircle, FiLoader, FiLogOut, FiRefreshCw, FiInfo } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { allocationAPI, handleAPIError } from '../../../lib/api';
 

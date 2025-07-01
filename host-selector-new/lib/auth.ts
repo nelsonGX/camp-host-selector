@@ -64,7 +64,7 @@ export function createAdminSession(): { token: string; sessionId: string } {
 
 export function verifyAdminToken(token: string): AdminSession | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    const decoded = jwt.verify(token, JWT_SECRET) as {sessionId: string};
     const session = sessions.get(decoded.sessionId);
     
     if (!session) {
@@ -81,7 +81,7 @@ export function verifyAdminToken(token: string): AdminSession | null {
     session.lastAccess = now;
     
     return session;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

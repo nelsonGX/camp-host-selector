@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   FiBarChart2, FiUsers, FiClock, FiDownload, FiRefreshCw, 
-  FiArrowLeft, FiLoader, FiCheckCircle, FiAlertCircle 
+  FiArrowLeft, FiLoader, FiCheckCircle 
 } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { allocationAPI, handleAPIError, downloadFile } from '../../../lib/api';
@@ -48,8 +48,8 @@ interface AllocationData {
 }
 
 interface LecturerStats {
-  timeSlot1: { count: number; students: any[] };
-  timeSlot2: { count: number; students: any[] };
+  timeSlot1: { count: number; students: Array<{name: string; student_id: string}> };
+  timeSlot2: { count: number; students: Array<{name: string; student_id: string}> };
   total: number;
 }
 
@@ -84,7 +84,7 @@ const AllocationResults = () => {
       const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
       downloadFile(response.data, `講師分配結果_${timestamp}.csv`);
       toast.success('CSV 文件已下載');
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error(handleAPIError(error, '匯出失敗'));
     } finally {
       setExportLoading(false);
@@ -107,7 +107,7 @@ const AllocationResults = () => {
     
     const lecturerStats: Record<string, LecturerStats> = {};
     Object.values(allocationData.stats.time_slots).forEach(timeSlot => {
-      Object.entries(timeSlot.lecturers).forEach(([lecturer, data]) => {
+      Object.entries(timeSlot.lecturers).forEach(([lecturer]) => {
         if (!lecturerStats[lecturer]) {
           lecturerStats[lecturer] = {
             timeSlot1: { count: 0, students: [] },

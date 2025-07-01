@@ -28,6 +28,11 @@ export async function PUT(
     const config = await getSystemConfig();
     const availableLecturers = config.lecturers;
 
+    // Validate that lecturers config is an array
+    if (!Array.isArray(availableLecturers)) {
+      return NextResponse.json({ error: 'Invalid lecturers configuration' }, { status: 500 });
+    }
+
     // Validate that all preferences are valid lecturers
     for (const pref of preferences) {
       if (!availableLecturers.includes(pref)) {

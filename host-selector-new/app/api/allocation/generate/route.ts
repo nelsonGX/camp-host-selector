@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
     // Get system configuration
     const config = await getSystemConfig();
-    const lecturers = config.lecturers;
+    const lecturers = Array.isArray(config.lecturers) ? config.lecturers : Object.keys(config.lecturers);
     const maxCapacity = config.max_capacity_per_lecturer;
 
     // Get all submitted students

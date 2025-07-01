@@ -152,7 +152,7 @@ const SystemConfig = () => {
     } : null);
   };
 
-  const updateSetting = (key: keyof SystemSettings, value: any) => {
+  const updateSetting = (key: keyof SystemSettings, value: string | number | boolean) => {
     if (!config) return;
     setConfig(prev => prev ? {
       ...prev,
