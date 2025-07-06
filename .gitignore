@@ -126,3 +126,4 @@ package-lock.json
 yarn.lock 
 
 backend/scripts/generateTestData.js
+/host-selector-new/prisma
