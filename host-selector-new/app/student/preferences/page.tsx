@@ -33,6 +33,22 @@ const StudentPreferences = () => {
   const [loading, setLoading] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
 
+  const fetchSystemInfo = useCallback(async () => {
+    try {
+      const response = await studentAPI.getSystemInfo();
+      if (response.success) {
+        setSystemInfo(response.data);
+        
+        // 如果還沒有志願序，初始化為講師列表
+        if (preferences.length === 0) {
+          setPreferences(response.data.lecturers);
+        }
+      }
+    } catch (error) {
+      toast.error(handleAPIError(error, '獲取系統資訊失敗'));
+    }
+  }, [preferences.length]);
+
   // 從 localStorage 獲取學員資料
   useEffect(() => {
     const storedData = localStorage.getItem('student_data');
@@ -59,22 +75,6 @@ const StudentPreferences = () => {
     // 獲取系統資訊
     fetchSystemInfo();
   }, [router, fetchSystemInfo]);
-
-  const fetchSystemInfo = useCallback(async () => {
-    try {
-      const response = await studentAPI.getSystemInfo();
-      if (response.success) {
-        setSystemInfo(response.data);
-        
-        // 如果還沒有志願序，初始化為講師列表
-        if (preferences.length === 0) {
-          setPreferences(response.data.lecturers);
-        }
-      }
-    } catch (error) {
-      toast.error(handleAPIError(error, '獲取系統資訊失敗'));
-    }
-  }, [preferences.length]);
 
   const moveUp = (index: number) => {
     if (index === 0) return;

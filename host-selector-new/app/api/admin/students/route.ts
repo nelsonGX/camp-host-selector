@@ -41,8 +41,11 @@ export async function GET(request: NextRequest) {
     }));
 
     return NextResponse.json({
-      students: formattedStudents,
-      stats
+      success: true,
+      data: {
+        students: formattedStudents,
+        stats
+      }
     });
 
   } catch (error) {

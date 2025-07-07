@@ -134,19 +134,28 @@ export async function GET(request: NextRequest) {
     const historyCount = await prisma.allocationHistory.count();
 
     return NextResponse.json({
-      system_info: {
-        lecturers,
-        time_slots: timeSlots,
-        max_capacity_per_lecturer: maxCapacity,
-        total_capacity: maxCapacity * lecturers.length * timeSlots.length
-      },
-      student_stats: studentStats,
-      allocation_stats: allocationStats,
-      lecturer_distribution: lecturerDistribution,
-      capacity_utilization: capacityUtilization,
-      preference_satisfaction: preferenceSatisfaction,
-      allocation_history_count: historyCount,
-      last_updated: new Date().toISOString()
+      success: true,
+      data: {
+        students: {
+          total: studentStats.total_students,
+          submitted: studentStats.submitted_students,
+          pending: studentStats.pending_students,
+          allocated: allocationStats.allocated_students
+        },
+        system_info: {
+          lecturers,
+          time_slots: timeSlots,
+          max_capacity_per_lecturer: maxCapacity,
+          total_capacity: maxCapacity * lecturers.length * timeSlots.length
+        },
+        student_stats: studentStats,
+        allocation_stats: allocationStats,
+        lecturer_distribution: lecturerDistribution,
+        capacity_utilization: capacityUtilization,
+        preference_satisfaction: preferenceSatisfaction,
+        allocation_history_count: historyCount,
+        last_updated: new Date().toISOString()
+      }
     });
 
   } catch (error) {
