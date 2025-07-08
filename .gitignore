@@ -43,3 +43,5 @@ next-env.d.ts
 /lib/generated/prisma
 /prisma/dev.db
 /prisma/migrations
+
+lib/student_data.ts

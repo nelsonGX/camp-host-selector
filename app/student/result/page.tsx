@@ -113,6 +113,18 @@ const StudentResult = () => {
 
   return (
     <div className="min-h-full bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
       <div className="max-w-4xl mx-auto">
         {/* 頁面標題 */}
         <div className="bg-white shadow rounded-lg mb-8">
@@ -208,63 +220,27 @@ const StudentResult = () => {
         {/* 分配結果 */}
         {myAllocation ? (
           <div className="bg-white shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-medium text-gray-900">您的時段分配</h2>
-              <p className="text-sm text-gray-600">
-                系統已為您分配以下時段和講師
-              </p>
-            </div>
             <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
                 {/* 第一時段 */}
-                <div className="bg-primary-50 rounded-lg p-6 border border-primary-200">
-                  <div className="flex items-center mb-4">
-                    <FiClock className="h-5 w-5 text-primary-600 mr-2" />
-                    <h3 className="text-lg font-semibold text-primary-900">第一時段</h3>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-sm text-primary-700">
-                      時間：{myAllocation.time_slot_1.time}
-                    </p>
-                    <div className="bg-white rounded-md p-4 border border-primary-200">
-                      <p className="text-sm text-gray-600 mb-1">講師</p>
-                      <p className="text-xl font-bold text-primary-900">
-                        {myAllocation.time_slot_1.lecturer}
-                      </p>
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">第一時段</h3>
+                      <p className="text-sm text-gray-600">{myAllocation.time_slot_1.time}</p>
                     </div>
+                    <p className="text-xl font-bold text-blue-700">{myAllocation.time_slot_1.lecturer}</p>
                   </div>
                 </div>
 
                 {/* 第二時段 */}
-                <div className="bg-success-50 rounded-lg p-6 border border-success-200">
-                  <div className="flex items-center mb-4">
-                    <FiClock className="h-5 w-5 text-success-600 mr-2" />
-                    <h3 className="text-lg font-semibold text-success-900">第二時段</h3>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-sm text-success-700">
-                      時間：{myAllocation.time_slot_2.time}
-                    </p>
-                    <div className="bg-white rounded-md p-4 border border-success-200">
-                      <p className="text-sm text-gray-600 mb-1">講師</p>
-                      <p className="text-xl font-bold text-success-900">
-                        {myAllocation.time_slot_2.lecturer}
-                      </p>
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">第二時段</h3>
+                      <p className="text-sm text-gray-600">{myAllocation.time_slot_2.time}</p>
                     </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 分配說明 */}
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <div className="flex">
-                  <FiInfo className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                  <div className="ml-3">
-                    <h4 className="text-sm font-medium text-blue-800">分配說明</h4>
-                    <p className="text-sm text-blue-700 mt-1">
-                      系統已根據您的志願序和其他學員的偏好，
-                      為您安排了兩個不同講師的時段。請按時參加！
-                    </p>
+                    <p className="text-xl font-bold text-green-700">{myAllocation.time_slot_2.lecturer}</p>
                   </div>
                 </div>
               </div>
@@ -272,46 +248,12 @@ const StudentResult = () => {
           </div>
         ) : (
           <div className="bg-white shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-medium text-gray-900">分配狀態</h2>
-            </div>
-            <div className="p-6">
-              <div className="text-center py-12">
-                {allocationResult ? (
-                  <div>
-                    <FiClock className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      分配結果尚未生成
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      管理員尚未開始分配，請稍後再查看結果
-                    </p>
-                  </div>
-                ) : (
-                  <div>
-                    <FiLoader className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      載入中...
-                    </h3>
-                    <p className="text-gray-600">
-                      正在檢查分配結果
-                    </p>
-                  </div>
-                )}
-              </div>
+            <div className="p-6 text-center">
+              <p className="text-gray-600">分配結果尚未生成，請稍後再查看</p>
             </div>
           </div>
         )}
 
-        {/* 操作區域 */}
-        <div className="mt-8 text-center">
-          <Link
-            href="/student/login"
-            className="text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200"
-          >
-            返回登入頁面
-          </Link>
-        </div>
       </div>
     </div>
   );

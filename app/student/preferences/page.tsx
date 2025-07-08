@@ -90,41 +90,9 @@ const StudentPreferences = () => {
     setPreferences(newPreferences);
   };
 
-  const handleSave = async () => {
-    if (!studentData) return;
-
-    setSaveLoading(true);
-    try {
-      const response = await studentAPI.updatePreferences(
-        studentData.student_id,
-        preferences
-      );
-      
-      if (response.success) {
-        toast.success('志願序已儲存');
-        
-        // 更新 localStorage 中的資料
-        const updatedData = {
-          ...studentData,
-          preferences
-        };
-        localStorage.setItem('student_data', JSON.stringify(updatedData));
-        setStudentData(updatedData);
-      }
-    } catch (error) {
-      toast.error(handleAPIError(error, '儲存失敗'));
-    } finally {
-      setSaveLoading(false);
-    }
-  };
 
   const handleSubmit = async () => {
     if (!studentData) return;
-
-    // 確認是否要提交
-    if (!window.confirm('確定要提交志願序嗎？提交後將無法修改。')) {
-      return;
-    }
 
     setLoading(true);
     try {
@@ -174,94 +142,83 @@ const StudentPreferences = () => {
 
   return (
     <div className="min-h-full bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes bounceIn {
+          0%, 20%, 40%, 60%, 80% {
+            animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+          }
+          0% {
+            opacity: 0;
+            transform: scale3d(.3, .3, .3);
+          }
+          20% {
+            transform: scale3d(1.1, 1.1, 1.1);
+          }
+          40% {
+            transform: scale3d(.9, .9, .9);
+          }
+          60% {
+            opacity: 1;
+            transform: scale3d(1.03, 1.03, 1.03);
+          }
+          80% {
+            transform: scale3d(.97, .97, .97);
+          }
+          100% {
+            opacity: 1;
+            transform: scale3d(1, 1, 1);
+          }
+        }
+      `}</style>
       <div className="max-w-3xl mx-auto">
         {/* 頁面標題 */}
         <div className="bg-white shadow rounded-lg mb-8">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center">
-                  <FiUser className="h-5 w-5 text-primary-600" />
-                </div>
-                <div className="ml-4">
-                  <h1 className="text-2xl font-bold text-gray-900">志願序填寫</h1>
-                  <p className="text-sm text-gray-600">
-                    學員：{studentData.name} ({studentData.student_id})
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="btn btn-outline"
-              >
-                <FiLogOut className="h-4 w-4 mr-2" />
-                登出
-              </button>
+          <div className="px-6 py-4 flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-bold text-gray-900">選擇講師順序</h1>
+              <p className="text-sm text-gray-600">{studentData.name}</p>
             </div>
-          </div>
-          
-          {/* 說明區域 */}
-          <div className="px-6 py-4 bg-blue-50">
-            <div className="flex">
-              <FiInfo className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-blue-800">填寫說明</h3>
-                <div className="mt-2 text-sm text-blue-700">
-                  <ul className="list-disc list-inside space-y-1">
-                    <li>請拖拽或使用上下箭頭調整講師的優先順序</li>
-                    <li>第 1 順位是您最希望聽到的講師</li>
-                    <li>系統會為您安排兩個時段，且確保不會重複聽同一位講師</li>
-                    <li>每位講師每時段最多容納 {systemInfo.max_capacity} 位學員</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <button
+              onClick={handleLogout}
+              className="text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200"
+            >
+              登出
+            </button>
           </div>
         </div>
 
         {/* 志願序列表 */}
         <div className="bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">
-              講師志願序排列
-            </h2>
-            <p className="text-sm text-gray-600">
-              使用箭頭按鈕調整順序，數字越小代表優先度越高
-            </p>
-          </div>
-          
           <div className="p-6">
             <div className="space-y-3">
               {preferences.map((lecturer, index) => (
                 <div
                   key={lecturer}
-                  className={`
-                    flex items-center justify-between p-4 border-2 rounded-lg transition-all duration-200
-                    ${index === 0 ? 'border-yellow-300 bg-yellow-50' : 
-                      index === 1 ? 'border-gray-300 bg-gray-50' :
-                      index === 2 ? 'border-orange-300 bg-orange-50' :
-                      'border-red-300 bg-red-50'}
-                  `}
+                  className="flex items-center justify-between p-4 border rounded-lg transition-all duration-300 ease-in-out transform hover:shadow-md hover:scale-[1.02] hover:border-blue-300"
+                  style={{
+                    animationDelay: `${index * 100}ms`,
+                    animation: 'fadeInUp 0.5s ease-out forwards'
+                  }}
                 >
                   <div className="flex items-center">
-                    <div className={`
-                      w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg
-                      ${index === 0 ? 'bg-yellow-500 text-white' : 
-                        index === 1 ? 'bg-gray-500 text-white' :
-                        index === 2 ? 'bg-orange-500 text-white' :
-                        'bg-red-500 text-white'}
-                    `}>
+                    <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-sm transition-all duration-300 ease-in-out">
                       {index + 1}
                     </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-900">
+                    <div className="ml-3">
+                      <h3 className="text-lg font-medium text-gray-900 transition-colors duration-200">
                         {lecturer}
                       </h3>
-                      <p className="text-sm text-gray-600">
-                        {index === 0 ? '第一志願' : 
-                         index === 1 ? '第二志願' :
-                         index === 2 ? '第三志願' : '第四志願'}
-                      </p>
                     </div>
                   </div>
                   
@@ -269,16 +226,16 @@ const StudentPreferences = () => {
                     <button
                       onClick={() => moveUp(index)}
                       disabled={index === 0}
-                      className="p-2 rounded-md bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                      className="p-2 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out hover:scale-110 active:scale-95"
                     >
-                      <FiArrowUp className="h-4 w-4" />
+                      <FiArrowUp className="h-4 w-4 transition-transform duration-200" />
                     </button>
                     <button
                       onClick={() => moveDown(index)}
                       disabled={index === preferences.length - 1}
-                      className="p-2 rounded-md bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                      className="p-2 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out hover:scale-110 active:scale-95"
                     >
-                      <FiArrowDown className="h-4 w-4" />
+                      <FiArrowDown className="h-4 w-4 transition-transform duration-200" />
                     </button>
                   </div>
                 </div>
@@ -287,74 +244,26 @@ const StudentPreferences = () => {
           </div>
         </div>
 
-        {/* 時段資訊 */}
-        <div className="mt-8 bg-white shadow rounded-lg">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">時段資訊</h2>
-          </div>
-          <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {systemInfo.time_slots.map((slot) => (
-                <div key={slot.id} className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900">{slot.name}</h3>
-                  <p className="text-primary-600 font-medium">{slot.time}</p>
-                  <p className="text-sm text-gray-600 mt-1">
-                    每位講師最多 {systemInfo.max_capacity} 人
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
 
         {/* 操作按鈕 */}
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-end">
-          <button
-            onClick={handleSave}
-            disabled={saveLoading}
-            className="btn btn-outline"
-          >
-            {saveLoading ? (
-              <>
-                <FiLoader className="h-4 w-4 mr-2 animate-spin" />
-                儲存中...
-              </>
-            ) : (
-              <>
-                <FiSave className="h-4 w-4 mr-2" />
-                儲存志願序
-              </>
-            )}
-          </button>
-          
+        <div className="mt-8 text-center">
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="btn btn-primary"
+            className="px-8 py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 hover:shadow-lg"
           >
             {loading ? (
-              <>
-                <FiLoader className="h-4 w-4 mr-2 animate-spin" />
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
                 提交中...
-              </>
-            ) : (
-              <>
-                <FiSend className="h-4 w-4 mr-2" />
-                確認提交
-              </>
-            )}
+              </span>
+            ) : '提交志願序'}
           </button>
         </div>
 
-        {/* 返回連結 */}
-        <div className="mt-8 text-center">
-          <Link
-            href="/student/login"
-            className="text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200"
-          >
-            返回登入頁面
-          </Link>
-        </div>
       </div>
     </div>
   );

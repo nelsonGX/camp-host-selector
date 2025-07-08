@@ -161,15 +161,9 @@ const StudentLogin = () => {
       <div className="max-w-md w-full space-y-8">
         {/* 標題 */}
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-primary-100 rounded-full flex items-center justify-center">
-            <FiUser className="h-6 w-6 text-primary-600" />
-          </div>
-          <h2 className="mt-6 text-3xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-gray-900">
             學員登入
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            請選擇您的姓名和隊號以開始填寫志願序
-          </p>
         </div>
 
         {/* 登入表單 */}
@@ -178,7 +172,7 @@ const StudentLogin = () => {
             {/* 姓名選擇 */}
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                中文姓名 <span className="text-red-500">*</span>
+                姓名
               </label>
               <div className="mt-1 relative" ref={dropdownRef}>
                 <div className="relative">
@@ -187,7 +181,7 @@ const StudentLogin = () => {
                     id="name"
                     type="text"
                     required
-                    className={`input pr-10 ${errors.name ? 'input-error' : ''}`}
+                    className={`input pr-10 transition-all duration-200 ease-in-out ${errors.name ? 'input-error' : ''}`}
                     placeholder="請搜尋或選擇您的姓名"
                     value={searchTerm}
                     onChange={handleSearchChange}
@@ -221,7 +215,7 @@ const StudentLogin = () => {
             {/* 隊號選擇 */}
             <div>
               <label htmlFor="teamNumber" className="block text-sm font-medium text-gray-700">
-                隊號 <span className="text-red-500">*</span>
+                隊號
               </label>
               <div className="mt-1 relative">
                 <select
@@ -251,43 +245,20 @@ const StudentLogin = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+              className="w-full py-3 px-4 text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 ease-in-out transform hover:scale-105 active:scale-95 hover:shadow-lg"
             >
               {loading ? (
-                <>
-                  <FiLoader className="h-4 w-4 mr-2 animate-spin" />
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
                   登入中...
-                </>
-              ) : (
-                <>
-                  <FiLogIn className="h-4 w-4 mr-2" />
-                  登入
-                </>
-              )}
+                </span>
+              ) : '登入'}
             </button>
           </div>
 
-          {/* 說明文字 */}
-          <div className="mt-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <FiUser className="h-5 w-5 text-blue-400" />
-                </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-blue-800">
-                    新用戶說明
-                  </h3>
-                  <div className="mt-2 text-sm text-blue-700">
-                    <p>
-                      如果是首次使用，系統會自動為您建立帳戶。
-                      請確保選擇的姓名和隊號正確無誤。
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </form>
       </div>
     </div>
