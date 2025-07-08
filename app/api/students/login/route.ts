@@ -14,16 +14,6 @@ export async function POST(request: NextRequest) {
     }
 
     const trimmedName = name.trim();
-    
-    // Validate Chinese name (basic validation)
-    const chineseNameRegex = /^[\u4e00-\u9fa5\u3400-\u4dbf\u20000-\u2a6df\u2a700-\u2b73f\u2b740-\u2b81f\u2b820-\u2ceaf\uf900-\ufaff\u3040-\u309f\u30a0-\u30ff\u2e80-\u2eff\u31c0-\u31ef\u2f00-\u2fdf\u2ff0-\u2fff\u3000-\u303f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+$/;
-    
-    if (!chineseNameRegex.test(trimmedName)) {
-      return NextResponse.json(
-        { success: false, message: '請輸入有效的中文姓名' },
-        { status: 400 }
-      );
-    }
 
     // Initialize default settings if needed
     await initializeDefaultSettings();
