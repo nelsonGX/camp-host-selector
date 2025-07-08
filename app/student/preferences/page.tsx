@@ -69,12 +69,6 @@ const StudentPreferences = () => {
       const response = await studentAPI.getStudent(studentId);
       setStudentData(response);
       
-      // 如果已提交，重定向到結果頁面
-      if (response.is_submitted) {
-        router.push('/student/result');
-        return;
-      }
-      
       // 設定已儲存的志願序
       if (response.preferences && response.preferences.length > 0) {
         setPreferences(response.preferences);
@@ -116,7 +110,7 @@ const StudentPreferences = () => {
       // 然後提交
       const response = await studentAPI.submitPreferences(studentData.student_id);
       
-      if (response.success) {
+      if (response == 200) {
         toast.success('志願序提交成功！');
         
         // 重定向到結果頁面

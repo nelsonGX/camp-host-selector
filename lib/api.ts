@@ -106,7 +106,7 @@ export const studentAPI = {
   // 提交志願序
   async submitPreferences(studentId: string) {
     const response = await api.post(`/students/${studentId}/submit`);
-    return response.data;
+    return response.status;
   },
 
   // 獲取系統資訊

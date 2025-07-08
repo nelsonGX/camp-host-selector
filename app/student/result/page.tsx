@@ -225,6 +225,10 @@ const StudentResult = () => {
             ) : (
               <p className="text-gray-500 text-center">無志願序資料</p>
             )}
+
+            <div className="pt-8">
+              <Link href={"/student/preferences"} className="rounded-2xl p-4 bg-zinc-300 border">編輯順序...</Link>
+            </div>
           </div>
         </div>
 
