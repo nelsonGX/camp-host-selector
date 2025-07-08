@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'camp-select-admin-jwt-secret-key-2024';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'fdn!wyz6XAM@xqv1mxq';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '12345678';
 
 interface AdminSession {
   sessionId: string;

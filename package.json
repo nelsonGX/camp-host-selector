@@ -1,22 +1,45 @@
 {
-  "name": "camp-select",
-  "version": "1.0.0",
-  "description": "講師排程與人員分配平台",
-  "main": "index.js",
+  "name": "host-selector-new",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run nextjs\"",
-    "dev-old": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "cd backend && npm run dev",
-    "client": "cd frontend && npm start",
-    "nextjs": "cd host-selector-new && npm run dev",
-    "build": "cd host-selector-new && npm run build",
-    "build-old": "cd frontend && npm run build",
-    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ../host-selector-new && npm install"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "db:reset": "prisma migrate reset",
+    "postinstall": "prisma generate"
   },
-  "keywords": ["scheduling", "allocation", "camp", "lecturer"],
-  "author": "",
-  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^6.11.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/uuid": "^10.0.0",
+    "axios": "^1.10.0",
+    "bcryptjs": "^3.0.2",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "next": "15.3.4",
+    "prisma": "^6.11.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
+    "react-icons": "^5.5.0",
+    "uuid": "^11.1.0"
+  },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.4",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
-} 
+}

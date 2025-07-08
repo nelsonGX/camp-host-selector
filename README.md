@@ -1,78 +1,36 @@
-# 講師排程與人員分配平台
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-一個基於 Web 的講師排程與人員分配系統，讓學員輸入對講師的志願序，並自動分配最佳的聽講安排。
+## Getting Started
 
-## 功能特色
+First, run the development server:
 
-- **簡化登入**：學員只需輸入中文姓名即可登入
-- 學員志願序輸入系統
-- 智能分配演算法（每時段每講師最多 13 人）
-- 兩個時段自動安排（確保學員不會重複聽同個講師）
-- 管理員後台管理系統
-- 結果匯出功能
-- **測試資料生成**：內建測試資料生成工具
-
-## 技術架構
-
-- 前端：React + TailwindCSS
-- 後端：Node.js + Express
-- 資料庫：SQLite
-
-## 快速開始
-
-1. 安裝依賴：
-```bash
-npm run install-all
-```
-
-2. 啟動開發環境：
 ```bash
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-## 講師列表
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- 飛飛
-- 豆泥
-- 吳政賢
-- 趙式隆
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## 時段安排
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-- 第一時段：15:55–16:45
-- 第二時段：16:50–17:30
+## Learn More
 
-## 學員登入方式
+To learn more about Next.js, take a look at the following resources:
 
-學員現在只需要輸入**中文姓名**即可登入系統：
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-1. 訪問學員登入頁面
-2. 輸入您的中文姓名（例如：王小明）
-3. 系統會自動建立帳戶或登入現有帳戶
-4. 開始填寫講師志願序
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## 測試資料生成
+## Deploy on Vercel
 
-系統提供便利的測試資料生成工具，可快速生成大量學員資料進行測試：
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-```bash
-# 進入後端目錄
-cd backend
-
-# 生成 51 位學員，100% 提交志願序（預設）
-npm run generate-test-data
-
-# 生成 20 位學員，70% 提交志願序
-npm run generate-test-data 20 0.7
-
-# 生成 30 位學員，100% 提交志願序
-npm run generate-test-data 30 1.0
-```
-
-### 參數說明
-- 第一個參數：學員數量（1-50）
-- 第二個參數：提交比例（0.0-1.0）
-
-⚠️ **注意**: 此腳本會清除現有的所有學員資料，請謹慎使用！
-
-詳細說明請參考：[測試資料生成工具說明](backend/scripts/README.md) 
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
