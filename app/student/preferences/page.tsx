@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { FiUser, FiArrowUp, FiArrowDown, FiSave, FiSend, FiLoader, FiLogOut, FiInfo } from 'react-icons/fi';
+import { FiArrowUp, FiArrowDown, FiLoader } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { studentAPI, handleAPIError } from '../../../lib/api';
 
@@ -31,7 +30,6 @@ const StudentPreferences = () => {
   const [preferences, setPreferences] = useState<string[]>([]);
   const [systemInfo, setSystemInfo] = useState<SystemInfo | null>(null);
   const [loading, setLoading] = useState(false);
-  const [saveLoading, setSaveLoading] = useState(false);
 
   const fetchSystemInfo = useCallback(async () => {
     try {
@@ -49,22 +47,7 @@ const StudentPreferences = () => {
     }
   }, [preferences.length]);
 
-  // 從 localStorage 獲取學員UUID並透過API獲取學員資料
-  useEffect(() => {
-    const studentUuid = localStorage.getItem('student_uuid');
-    if (studentUuid) {
-      fetchStudentData(studentUuid);
-    } else {
-      // 沒有學員UUID，重定向到登入頁面
-      router.push('/student/login');
-      return;
-    }
-
-    // 獲取系統資訊
-    fetchSystemInfo();
-  }, [router, fetchSystemInfo]);
-
-  const fetchStudentData = async (studentId: string) => {
+  const fetchStudentData = useCallback(async (studentId: string) => {
     try {
       const response = await studentAPI.getStudent(studentId);
       setStudentData(response);
@@ -79,7 +62,23 @@ const StudentPreferences = () => {
       localStorage.removeItem('student_uuid');
       router.push('/student/login');
     }
-  };
+  }, [router]);
+
+  // 從 localStorage 獲取學員UUID並透過API獲取學員資料
+  useEffect(() => {
+    const studentUuid = localStorage.getItem('student_uuid');
+    if (studentUuid) {
+      fetchStudentData(studentUuid);
+    } else {
+      // 沒有學員UUID，重定向到登入頁面
+      router.push('/student/login');
+      return;
+    }
+
+    // 獲取系統資訊
+    fetchSystemInfo();
+  }, [router, fetchSystemInfo, fetchStudentData]);
+
 
   const moveUp = (index: number) => {
     if (index === 0) return;

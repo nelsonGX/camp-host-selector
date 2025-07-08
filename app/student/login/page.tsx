@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FiUser, FiLogIn, FiLoader, FiChevronDown, FiSearch } from 'react-icons/fi';
+import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { studentAPI, handleAPIError } from '../../../lib/api';
 import { studentData } from '../../../lib/student_data';

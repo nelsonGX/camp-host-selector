@@ -34,7 +34,12 @@ export async function GET() {
     const maxCapacity = config.max_capacity_per_lecturer;
 
     // Group allocations by student to create the expected format
-    const studentAllocations: Record<string, any> = {};
+    const studentAllocations: Record<string, {
+      student_id: string;
+      name: string;
+      time_slot_1: { lecturer: string; time: string };
+      time_slot_2: { lecturer: string; time: string };
+    }> = {};
     allocations.forEach(alloc => {
       if (!studentAllocations[alloc.studentId]) {
         studentAllocations[alloc.studentId] = {
@@ -103,13 +108,27 @@ export async function GET() {
     });
 
     // Create detailed time slot stats for frontend
-    const timeSlotStats: Record<string, any> = {};
+    const timeSlotStats: Record<string, {
+      name: string;
+      time: string;
+      lecturers: Record<string, {
+        current_count: number;
+        max_capacity: number;
+        utilization_rate: string;
+        students: Array<{ name: string; student_id: string }>;
+      }>;
+    }> = {};
     
     timeSlots.forEach((slot: {id: number, name: string, time: string}) => {
       timeSlotStats[slot.id] = {
         name: slot.name,
         time: slot.time,
-        lecturers: {} as Record<string, any>
+        lecturers: {} as Record<string, {
+          current_count: number;
+          max_capacity: number;
+          utilization_rate: string;
+          students: Array<{ name: string; student_id: string }>;
+        }>
       };
       
       // Initialize lecturer data for this time slot

@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FiClock, FiCheckCircle, FiLoader, FiLogOut, FiRefreshCw, FiInfo } from 'react-icons/fi';
+import { FiCheckCircle, FiLoader, FiLogOut, FiRefreshCw } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { allocationAPI, studentAPI, handleAPIError } from '../../../lib/api';
 
@@ -51,9 +51,9 @@ const StudentResult = () => {
 
     // 獲取分配結果
     fetchAllocationResult();
-  }, [router]);
+  }, [router, fetchStudentData]);
 
-  const fetchStudentData = async (studentId: string) => {
+  const fetchStudentData = useCallback(async (studentId: string) => {
     try {
       const response = await studentAPI.getStudent(studentId);
       setStudentData(response);
@@ -69,7 +69,7 @@ const StudentResult = () => {
       localStorage.removeItem('student_uuid');
       router.push('/student/login');
     }
-  };
+  }, [router]);
 
   const fetchAllocationResult = async () => {
     setLoading(true);
