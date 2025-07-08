@@ -49,25 +49,13 @@ const StudentPreferences = () => {
     }
   }, [preferences.length]);
 
-  // 從 localStorage 獲取學員資料
+  // 從 localStorage 獲取學員UUID並透過API獲取學員資料
   useEffect(() => {
-    const storedData = localStorage.getItem('student_data');
-    if (storedData) {
-      const data: StudentData = JSON.parse(storedData);
-      setStudentData(data);
-      
-      // 如果已提交，重定向到結果頁面
-      if (data.is_submitted) {
-        router.push('/student/result');
-        return;
-      }
-      
-      // 設定已儲存的志願序
-      if (data.preferences && data.preferences.length > 0) {
-        setPreferences(data.preferences);
-      }
+    const studentUuid = localStorage.getItem('student_uuid');
+    if (studentUuid) {
+      fetchStudentData(studentUuid);
     } else {
-      // 沒有學員資料，重定向到登入頁面
+      // 沒有學員UUID，重定向到登入頁面
       router.push('/student/login');
       return;
     }
@@ -75,6 +63,29 @@ const StudentPreferences = () => {
     // 獲取系統資訊
     fetchSystemInfo();
   }, [router, fetchSystemInfo]);
+
+  const fetchStudentData = async (studentId: string) => {
+    try {
+      const response = await studentAPI.getStudent(studentId);
+      setStudentData(response);
+      
+      // 如果已提交，重定向到結果頁面
+      if (response.is_submitted) {
+        router.push('/student/result');
+        return;
+      }
+      
+      // 設定已儲存的志願序
+      if (response.preferences && response.preferences.length > 0) {
+        setPreferences(response.preferences);
+      }
+    } catch (error) {
+      toast.error(handleAPIError(error, '無法獲取學員資料'));
+      // 清除無效的UUID並重定向到登入頁面
+      localStorage.removeItem('student_uuid');
+      router.push('/student/login');
+    }
+  };
 
   const moveUp = (index: number) => {
     if (index === 0) return;
@@ -108,15 +119,6 @@ const StudentPreferences = () => {
       if (response.success) {
         toast.success('志願序提交成功！');
         
-        // 更新 localStorage
-        const updatedData = {
-          ...studentData,
-          is_submitted: true,
-          submitted_at: response.data.submitted_at,
-          preferences
-        };
-        localStorage.setItem('student_data', JSON.stringify(updatedData));
-        
         // 重定向到結果頁面
         router.push('/student/result');
       }
@@ -128,7 +130,7 @@ const StudentPreferences = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('student_data');
+    localStorage.removeItem('student_uuid');
     router.push('/student/login');
   };
 

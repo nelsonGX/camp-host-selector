@@ -21,10 +21,6 @@ export async function POST(
       return NextResponse.json({ error: 'Student not found' }, { status: 404 });
     }
 
-    if (student.isSubmitted) {
-      return NextResponse.json({ error: 'Preferences already submitted' }, { status: 400 });
-    }
-
     // Validate that student has at least some preferences
     const preferences = student.preferences ? JSON.parse(student.preferences) : [];
     if (preferences.length === 0) {

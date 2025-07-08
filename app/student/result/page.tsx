@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FiClock, FiCheckCircle, FiLoader, FiLogOut, FiRefreshCw, FiInfo } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import { allocationAPI, handleAPIError } from '../../../lib/api';
+import { allocationAPI, studentAPI, handleAPIError } from '../../../lib/api';
 
 interface StudentData {
   student_id: string;
@@ -39,19 +39,12 @@ const StudentResult = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 從 localStorage 獲取學員資料
-    const storedData = localStorage.getItem('student_data');
-    if (storedData) {
-      const data: StudentData = JSON.parse(storedData);
-      setStudentData(data);
-      
-      // 如果未提交，重定向到志願序頁面
-      if (!data.is_submitted) {
-        router.push('/student/preferences');
-        return;
-      }
+    // 從 localStorage 獲取學員UUID並透過API獲取學員資料
+    const studentUuid = localStorage.getItem('student_uuid');
+    if (studentUuid) {
+      fetchStudentData(studentUuid);
     } else {
-      // 沒有學員資料，重定向到登入頁面
+      // 沒有學員UUID，重定向到登入頁面
       router.push('/student/login');
       return;
     }
@@ -59,6 +52,24 @@ const StudentResult = () => {
     // 獲取分配結果
     fetchAllocationResult();
   }, [router]);
+
+  const fetchStudentData = async (studentId: string) => {
+    try {
+      const response = await studentAPI.getStudent(studentId);
+      setStudentData(response);
+      
+      // 如果未提交，重定向到志願序頁面
+      if (!response.is_submitted) {
+        router.push('/student/preferences');
+        return;
+      }
+    } catch (error) {
+      toast.error(handleAPIError(error, '無法獲取學員資料'));
+      // 清除無效的UUID並重定向到登入頁面
+      localStorage.removeItem('student_uuid');
+      router.push('/student/login');
+    }
+  };
 
   const fetchAllocationResult = async () => {
     setLoading(true);
@@ -75,7 +86,7 @@ const StudentResult = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('student_data');
+    localStorage.removeItem('student_uuid');
     router.push('/student/login');
   };
 

@@ -49,11 +49,6 @@ export async function PUT(
       return NextResponse.json({ error: 'Student not found' }, { status: 404 });
     }
 
-    // Check if already submitted
-    if (student.isSubmitted) {
-      return NextResponse.json({ error: 'Cannot update preferences after submission' }, { status: 400 });
-    }
-
     // Update preferences
     const updatedStudent = await prisma.student.update({
       where: { studentId: id },

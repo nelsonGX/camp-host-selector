@@ -136,8 +136,8 @@ const StudentLogin = () => {
       );
       
       if (response.success) {
-        // 儲存學員資訊到 localStorage
-        localStorage.setItem('student_data', JSON.stringify(response.data));
+        // 只儲存學員UUID到 localStorage
+        localStorage.setItem('student_uuid', response.data.student_id);
         
         toast.success(response.message);
         
