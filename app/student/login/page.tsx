@@ -30,7 +30,7 @@ const StudentLogin = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   
-  const studentNames = Object.keys(studentData);
+  const studentNames = Object.keys(studentData).sort(() => Math.random() - 0.5);
   const filteredNames = studentNames.filter(name => 
     name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -114,8 +114,6 @@ const StudentLogin = () => {
     
     if (!formData.teamNumber.trim()) {
       newErrors.teamNumber = '請選擇隊號';
-    } else if (formData.name && studentData[formData.name] !== formData.teamNumber) {
-      newErrors.teamNumber = '隊號與姓名不符';
     }
     
     setErrors(newErrors);
@@ -133,7 +131,8 @@ const StudentLogin = () => {
     
     try {
       const response = await studentAPI.login(
-        formData.name.trim()
+        formData.name.trim(),
+        formData.teamNumber.trim()
       );
       
       if (response.success) {
@@ -225,12 +224,12 @@ const StudentLogin = () => {
                   className={`input pr-10 ${errors.teamNumber ? 'input-error' : ''}`}
                   value={formData.teamNumber}
                   onChange={handleChange}
-                  disabled={loading || !formData.name}
+                  disabled={loading}
                 >
                   <option value="">請選擇隊號</option>
-                  {formData.name && (
-                    <option value={studentData[formData.name]}>第 {studentData[formData.name]} 隊</option>
-                  )}
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(team => (
+                    <option key={team} value={team}>第 {team} 隊</option>
+                  ))}
                 </select>
                 <FiChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
                 {errors.teamNumber && (

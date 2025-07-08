@@ -80,10 +80,11 @@ api.interceptors.response.use(
 
 // 學員相關 API
 export const studentAPI = {
-  // 學員登入/註冊（只需要姓名）
-  async login(name: string) {
+  // 學員登入/註冊（需要姓名和隊號）
+  async login(name: string, teamNumber: string) {
     const response = await api.post('/students/login', {
-      name: name.trim()
+      name: name.trim(),
+      teamNumber: teamNumber.trim()
     });
     return response.data;
   },

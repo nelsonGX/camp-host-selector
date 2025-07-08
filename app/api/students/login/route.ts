@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma, initializeDefaultSettings } from '../../../../lib/prisma';
 import { v4 as uuidv4 } from 'uuid';
+import { studentData } from '../../../../lib/student_data';
 
 export async function POST(request: NextRequest) {
   try {
-    const { name } = await request.json();
+    const { name, teamNumber } = await request.json();
 
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
       return NextResponse.json(
@@ -13,7 +14,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!teamNumber || typeof teamNumber !== 'string' || teamNumber.trim().length === 0) {
+      return NextResponse.json(
+        { success: false, message: '請選擇隊號' },
+        { status: 400 }
+      );
+    }
+
     const trimmedName = name.trim();
+    const trimmedTeamNumber = teamNumber.trim();
+
+    // Verify name and team number match
+    if (!studentData[trimmedName] || studentData[trimmedName].toString() !== trimmedTeamNumber) {
+      return NextResponse.json(
+        { success: false, message: '姓名與隊號不符' },
+        { status: 400 }
+      );
+    }
 
     // Initialize default settings if needed
     await initializeDefaultSettings();
