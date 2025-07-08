@@ -38,21 +38,6 @@ const StudentResult = () => {
   const [allocationResult, setAllocationResult] = useState<AllocationData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // 從 localStorage 獲取學員UUID並透過API獲取學員資料
-    const studentUuid = localStorage.getItem('student_uuid');
-    if (studentUuid) {
-      fetchStudentData(studentUuid);
-    } else {
-      // 沒有學員UUID，重定向到登入頁面
-      router.push('/student/login');
-      return;
-    }
-
-    // 獲取分配結果
-    fetchAllocationResult();
-  }, [router, fetchStudentData]);
-
   const fetchStudentData = useCallback(async (studentId: string) => {
     try {
       const response = await studentAPI.getStudent(studentId);
@@ -70,6 +55,21 @@ const StudentResult = () => {
       router.push('/student/login');
     }
   }, [router]);
+  
+  useEffect(() => {
+    // 從 localStorage 獲取學員UUID並透過API獲取學員資料
+    const studentUuid = localStorage.getItem('student_uuid');
+    if (studentUuid) {
+      fetchStudentData(studentUuid);
+    } else {
+      // 沒有學員UUID，重定向到登入頁面
+      router.push('/student/login');
+      return;
+    }
+
+    // 獲取分配結果
+    fetchAllocationResult();
+  }, [router, fetchStudentData]);
 
   const fetchAllocationResult = async () => {
     setLoading(true);
