@@ -55,7 +55,7 @@ const StudentResult = () => {
       router.push('/student/login');
     }
   }, [router]);
-  
+
   useEffect(() => {
     // 從 localStorage 獲取學員UUID並透過API獲取學員資料
     const studentUuid = localStorage.getItem('student_uuid');
@@ -152,7 +152,7 @@ const StudentResult = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="space-y-2 items-center space-x-3">
                 <button
                   onClick={fetchAllocationResult}
                   className="btn btn-outline"
@@ -186,6 +186,43 @@ const StudentResult = () => {
             </div>
           </div>
         </div>
+
+        {/* 分配結果 */}
+        {myAllocation ? (
+          <div className="bg-white shadow rounded-lg mb-8">
+            <div className="p-6">
+              <div className="space-y-4">
+                {/* 第一時段 */}
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">第一時段</h3>
+                      <p className="text-sm text-gray-600">{myAllocation.time_slot_1.time}</p>
+                    </div>
+                    <p className="text-xl font-bold text-blue-700">{myAllocation.time_slot_1.lecturer}</p>
+                  </div>
+                </div>
+
+                {/* 第二時段 */}
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">第二時段</h3>
+                      <p className="text-sm text-gray-600">{myAllocation.time_slot_2.time}</p>
+                    </div>
+                    <p className="text-xl font-bold text-green-700">{myAllocation.time_slot_2.lecturer}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white shadow rounded-lg">
+            <div className="p-6 text-center">
+              <p className="text-gray-600">分配結果尚未生成，請稍後再查看</p>
+            </div>
+          </div>
+        )}
 
         {/* 我的志願序 */}
         <div className="bg-white shadow rounded-lg mb-8">
@@ -232,42 +269,6 @@ const StudentResult = () => {
           </div>
         </div>
 
-        {/* 分配結果 */}
-        {myAllocation ? (
-          <div className="bg-white shadow rounded-lg">
-            <div className="p-6">
-              <div className="space-y-4">
-                {/* 第一時段 */}
-                <div className="p-4 bg-blue-50 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">第一時段</h3>
-                      <p className="text-sm text-gray-600">{myAllocation.time_slot_1.time}</p>
-                    </div>
-                    <p className="text-xl font-bold text-blue-700">{myAllocation.time_slot_1.lecturer}</p>
-                  </div>
-                </div>
-
-                {/* 第二時段 */}
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">第二時段</h3>
-                      <p className="text-sm text-gray-600">{myAllocation.time_slot_2.time}</p>
-                    </div>
-                    <p className="text-xl font-bold text-green-700">{myAllocation.time_slot_2.lecturer}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-white shadow rounded-lg">
-            <div className="p-6 text-center">
-              <p className="text-gray-600">分配結果尚未生成，請稍後再查看</p>
-            </div>
-          </div>
-        )}
 
       </div>
     </div>

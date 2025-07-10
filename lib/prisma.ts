@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import lecturerData from './lecturers.json'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
@@ -14,7 +15,7 @@ export async function initializeDefaultSettings() {
     const defaultSettings = [
       {
         key: 'lecturers',
-        value: JSON.stringify(['飛飛', '豆泥', '吳政賢', '趙式隆'])
+        value: JSON.stringify(lecturerData.lecturers)
       },
       {
         key: 'time_slots',
@@ -69,7 +70,7 @@ export async function getSystemConfig() {
     });
 
     return {
-      lecturers: config.lecturers || ['飛飛', '豆泥', '吳政賢', '趙式隆'],
+      lecturers: config.lecturers || lecturerData.lecturers,
       time_slots: config.time_slots || [
         { id: 1, name: '第一時段', time: '15:55-16:45' },
         { id: 2, name: '第二時段', time: '16:50-17:30' }
@@ -83,7 +84,7 @@ export async function getSystemConfig() {
     console.error('Failed to get system config:', error);
     // Return default configuration
     return {
-      lecturers: ['飛飛', '豆泥', '吳政賢', '趙式隆'],
+      lecturers: lecturerData.lecturers,
       time_slots: [
         { id: 1, name: '第一時段', time: '15:55-16:45' },
         { id: 2, name: '第二時段', time: '16:50-17:30' }
