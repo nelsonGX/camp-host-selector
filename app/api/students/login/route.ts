@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     if (!teamNumber || typeof teamNumber !== 'string' || teamNumber.trim().length === 0) {
       return NextResponse.json(
-        { success: false, message: '請選擇隊號' },
+        { success: false, message: '請選擇小隊名稱' },
         { status: 400 }
       );
     }
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     // Verify name and team number match
     if (!(trimmedName in studentData) || studentData[trimmedName as keyof typeof studentData].toString() !== trimmedTeamNumber) {
       return NextResponse.json(
-        { success: false, message: '姓名與隊號不符' },
+        { success: false, message: '姓名與小隊名稱不符' },
         { status: 400 }
       );
     }

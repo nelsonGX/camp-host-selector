@@ -15,8 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "講師排程與人員分配平台",
-  description: "講師排程與人員分配平台",
+  title: "SITCON Camp 2025 視界咖啡館講師排序系統",
 };
 
 export default function RootLayout({

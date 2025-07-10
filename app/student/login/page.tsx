@@ -113,7 +113,7 @@ const StudentLogin = () => {
     }
     
     if (!formData.teamNumber.trim()) {
-      newErrors.teamNumber = '請選擇隊號';
+      newErrors.teamNumber = '請選擇小隊';
     }
     
     setErrors(newErrors);
@@ -211,10 +211,10 @@ const StudentLogin = () => {
               </div>
             </div>
 
-            {/* 隊號選擇 */}
+            {/* 小隊名稱選擇 */}
             <div>
               <label htmlFor="teamNumber" className="block text-sm font-medium text-gray-700">
-                隊號
+                小隊名稱
               </label>
               <div className="mt-1 relative">
                 <select
@@ -226,7 +226,7 @@ const StudentLogin = () => {
                   onChange={handleChange}
                   disabled={loading}
                 >
-                  <option value="">請選擇隊號</option>
+                  <option value="">請選擇小隊名稱</option>
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(team => (
                     <option key={team} value={team}>第 {team} 隊</option>
                   ))}
