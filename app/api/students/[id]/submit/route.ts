@@ -36,6 +36,14 @@ export async function POST(
       }
     });
 
+    console.log('Student preferences submitted:', {
+      studentId: updatedStudent.studentId,
+      name: updatedStudent.name,
+      preferences: updatedStudent.preferences,
+      isSubmitted: updatedStudent.isSubmitted,
+      submittedAt: updatedStudent.submittedAt
+    });
+
     return NextResponse.json({
       student_id: updatedStudent.studentId,
       name: updatedStudent.name,
