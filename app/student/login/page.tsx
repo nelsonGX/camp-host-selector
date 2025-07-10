@@ -4,8 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import { studentAPI, handleAPIError } from '../../../lib/api';
-import { studentData } from '../../../lib/student_data';
+import { studentAPI, handleAPIError } from '@/lib/api';
+import { studentData } from '@/lib/student_data';
 
 interface FormData {
   name: string;
