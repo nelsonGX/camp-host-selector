@@ -30,7 +30,7 @@ export async function GET() {
     // Get system configuration for context
     const config = await getSystemConfig();
     const lecturers = config.lecturers;
-    const timeSlots = config.time_slots;
+    const timeSlots = config.time_slots as Array<{id: number, name: string, time: string}>;
     const maxCapacity = config.max_capacity_per_lecturer;
 
     // Group allocations by student to create the expected format
@@ -75,7 +75,7 @@ export async function GET() {
     };
 
     // Initialize lecturer distribution
-    lecturers.forEach((lecturer: string) => {
+    (lecturers as string[]).forEach((lecturer: string) => {
       stats.lecturer_distribution[lecturer] = { slot1: 0, slot2: 0, total: 0 };
     });
 
@@ -132,7 +132,7 @@ export async function GET() {
       };
       
       // Initialize lecturer data for this time slot
-      lecturers.forEach((lecturer: string) => {
+      (lecturers as string[]).forEach((lecturer: string) => {
         const slotAllocations = allocations.filter(a => a.timeSlot === slot.id && a.lecturer === lecturer);
         timeSlotStats[slot.id].lecturers[lecturer] = {
           current_count: slotAllocations.length,

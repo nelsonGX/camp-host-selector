@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiSettings, FiSave, FiRotateCcw, FiPlus, FiX, FiClock, FiUser, FiRefreshCw } from 'react-icons/fi';
 import toast from 'react-hot-toast';
-import { adminAPI, handleAPIError } from '../../../lib/api';
+import { adminAPI, handleAPIError } from '@/lib/api';
 
 interface TimeSlot {
   id: number;
@@ -22,6 +22,7 @@ interface SystemConfig {
   lecturers: string[];
   time_slots: TimeSlot[];
   settings: SystemSettings;
+  [key: string]: unknown; 
 }
 
 const SystemConfig = () => {

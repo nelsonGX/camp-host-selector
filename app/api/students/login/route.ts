@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     const trimmedTeamNumber = teamNumber.trim();
 
     // Verify name and team number match
-    if (!studentData[trimmedName] || studentData[trimmedName].toString() !== trimmedTeamNumber) {
+    if (!(trimmedName in studentData) || studentData[trimmedName as keyof typeof studentData].toString() !== trimmedTeamNumber) {
       return NextResponse.json(
         { success: false, message: '姓名與隊號不符' },
         { status: 400 }
